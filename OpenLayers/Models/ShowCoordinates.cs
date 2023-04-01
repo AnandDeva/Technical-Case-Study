@@ -1,4 +1,4 @@
-﻿namespace Project1.Models
+﻿namespace TechnicalCaseStudy.Models
 {
     public class ShowCoordinates
     {
