@@ -12,7 +12,7 @@ using TechnicalCaseStudy.Models;
 namespace TechnicalCaseStudy.Migrations
 {
     [DbContext(typeof(OpenLayerDbContext))]
-    [Migration("20230401151549_Initial")]
+    [Migration("20230401164845_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -36,11 +36,11 @@ namespace TechnicalCaseStudy.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Longitude")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

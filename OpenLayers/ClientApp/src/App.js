@@ -14,6 +14,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Modal, Form, FormControl, Row } from "react-bootstrap";
 import { nanoid } from "nanoid";
 import { getDistance } from "ol/sphere";
+import axios from "axios";
+import OpenLayerData from "./components/OpenLayerData";
 
 function App() {
   const [markers, setMarkers] = useState([
@@ -172,6 +174,9 @@ function App() {
         description: markerDescription,
       },
     ]);
+    let olData = new OpenLayerData(markerName, markerLat, markerLong, markerDescription, radius)
+    
+    axios.post("https://localhost:44381/api/openlayers",olData);
     setCurrentLocation(coordinates);
     setCenter(fromLonLat(coordinates));
     setShowModal(false);

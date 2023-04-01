@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using TechnicalCaseStudy.ApplicationLayer;
+using TechnicalCaseStudy.Interfaces;
 using TechnicalCaseStudy.Models;
+using TechnicalCaseStudy.RepositoryLayer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,10 +10,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
-
 builder.Services.AddDbContext<OpenLayerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+
+builder.Services.AddScoped<IAppCoordinates, AppCoordinatesService>();
+builder.Services.AddScoped<IRepoCoordinates, AppCoordinatesRepo>();
+
+builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
+{
+    build.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+}));
+
+var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -22,7 +35,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
+app.UseCors("corspolicy");
 
 app.MapControllerRoute(
     name: "default",

@@ -1,12 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace TechnicalCaseStudy.Models
+﻿namespace TechnicalCaseStudy.ViewModel
 {
-    public class AddCoordinates
+    public class AppCoordinatesVM
     {
-        [Key]
-        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Latitude { get; set; }
         public string? Longitude { get; set; }
