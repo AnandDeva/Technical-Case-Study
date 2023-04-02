@@ -48,6 +48,7 @@ function App() {
   const [markerDescription, setMarkerDescription] = useState("");
   const [radius, setRadius] = useState(50);
   const [openRadiusModal, setOpenradiusModal] = useState(false);
+  const [list,setList] = useState();
 
   useEffect(() => {
     const map = new Map({
@@ -174,14 +175,14 @@ function App() {
         description: markerDescription,
       },
     ]);
-    let olData = new OpenLayerData(markerName, markerLat, markerLong, markerDescription, radius)
+    let olData = new OpenLayerData(markerName, markerLat, markerLong, markerDescription, radius);
     
     axios.post("https://localhost:44381/api/openlayers",olData);
     setCurrentLocation(coordinates);
     setCenter(fromLonLat(coordinates));
     setShowModal(false);
   };
-
+  
   const handleSearch = (event) => {
     event.preventDefault();
     // perform the search using the map API
@@ -304,15 +305,15 @@ function App() {
       </Modal>
       <div
         ref={mapRef}
-        style={{ width: "100%", height: "100vh", border: "1px solid black" }}
+        style={{ width: "100%", height: "80vh", border: "1px solid black" }}
       ></div>
-      {/* <ul>
+       <ul>
         {markers.map((marker) => (
           <li
             key={marker.id}
           >{`Longitude: ${marker.coordinates[0]}, Latitude: ${marker.coordinates[1]}`}</li>
         ))}
-      </ul> */}
+      </ul>
     </div>
   );
 }
