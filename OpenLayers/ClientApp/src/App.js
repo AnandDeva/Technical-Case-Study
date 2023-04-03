@@ -16,6 +16,7 @@ import { nanoid } from "nanoid";
 import { getDistance } from "ol/sphere";
 import axios from "axios";
 import OpenLayerData from "./components/OpenLayerData";
+import Table from "react-bootstrap/Table";
 
 function App() {
   const [markers, setMarkers] = useState([
@@ -48,7 +49,7 @@ function App() {
   const [markerDescription, setMarkerDescription] = useState("");
   const [radius, setRadius] = useState(50);
   const [openRadiusModal, setOpenradiusModal] = useState(false);
-  const [list,setList] = useState();
+  const [list,setList] = useState([]);
 
   useEffect(() => {
     const map = new Map({
@@ -117,9 +118,25 @@ function App() {
         .then((data) => {
           // Save the list of locations to state
           console.log(data.results);
+          
           // setLocations(data.results);
         });
   }, [currentLocation]);
+
+  useEffect(() => {
+    fetch(
+        `https://localhost:44381/api/openlayers`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          // Save the list of locations to state
+          console.log(data);
+          setList(data);
+          
+          // setLocations(data.results);
+        });
+  }, []);
+
 
   const getUserLocation = () => {
     if (navigator.geolocation) {
@@ -181,6 +198,7 @@ function App() {
     setCurrentLocation(coordinates);
     setCenter(fromLonLat(coordinates));
     setShowModal(false);
+    window.location.reload();
   };
   
   const handleSearch = (event) => {
@@ -195,8 +213,8 @@ function App() {
       <Form
         style={{
           position: "absolute",
-          top: "10px",
-          left: "50%",
+          bottom: "150px",
+          left: "45%",
           transform: "translateX(-50%)",
           zIndex: "1",
           width: "150px",
@@ -305,7 +323,7 @@ function App() {
       </Modal>
       <div
         ref={mapRef}
-        style={{ width: "100%", height: "80vh", border: "1px solid black" }}
+        style={{ width: "90%", height: "80vh", border: "1px solid black" }}
       ></div>
        <ul>
         {markers.map((marker) => (
@@ -314,6 +332,47 @@ function App() {
           >{`Longitude: ${marker.coordinates[0]}, Latitude: ${marker.coordinates[1]}`}</li>
         ))}
       </ul>
+      
+
+      <Table style={{width:'90%'}}>
+        <tr>
+          <td>
+            Name
+          </td>
+          <td>
+            Latitude
+          </td>
+          <td>
+            Longitude
+          </td>
+          <td>
+            Description
+          </td>
+          <td>
+            Radius
+          </td>
+        </tr>
+        {
+          list.map((item,i) =>
+            <tr key={i}>
+              <td>
+                {item.name}
+              </td>
+              <td>
+                {item.latitude}
+              </td>
+              <td>
+                {item.longitude}
+              </td>
+              <td>
+                {item.description}
+              </td>
+              <td>
+                {item.radius}
+              </td>
+            </tr>
+          )}
+      </Table>
     </div>
   );
 }
